@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import confetti from 'canvas-confetti'
 import './App.css'
 
 const TURNS = {
@@ -53,6 +54,16 @@ function App() {
     return null
   }
 
+  const resetGame = () => {
+    setBoard(Array(9).fill(null))
+    setTurn(TURNS.X)
+    setWinner(null)
+  }
+
+  const checkEndGame = (newBoard) => {
+    return newBoard.every((square) => square != null)
+  }
+
   const updateBoard = (index) => {
     //No actualizar si hay ganador o si ya hay una ficha
     if(board[index] || winner) return
@@ -66,7 +77,10 @@ function App() {
     //Checar ganador
     const NewWinner = CheckWinner(newBoard)
     if(NewWinner) {
+      confetti()
       setWinner(NewWinner)
+    } else if(checkEndGame(newBoard)) {
+      setWinner(false)
     }
   }
   console.log('updateBoard')
@@ -74,6 +88,7 @@ function App() {
   return (
     <main className='board'>
       <h1>Tic Tac Toe</h1>
+      <button onClick={resetGame}>Reset del juego</button>
       <section className='game'>
         {
           board.map((_, index) => {
@@ -96,15 +111,15 @@ function App() {
 
       </section>
 
-      {
+      {//Renderizado condicional
         winner  != null && (
           <section className="winner">
             <div className="text">
               <h2>
                 {
                   winner === false
-                  ? 'Empate'
-                  : `Ganador: ${winner}`
+                  ? 'Empate.'
+                  : `Ganador:`
                 }
               </h2>
 
@@ -113,7 +128,7 @@ function App() {
               </header>
 
               <footer>
-                <button>Empezar de nuevo</button>
+                <button onClick={resetGame}>Empezar de nuevo</button>
               </footer>
             </div>
           </section>

@@ -43,9 +43,6 @@ function App() {
     //Cambiar el turno
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
     setTurn(newTurn)
-    //Guardar el ganador
-    window.localStorage.setItem('board', JSON.stringify(newBoard))
-    window.localStorage.setItem('turn', newTurn)
 
     //Checar ganador
     const NewWinner = CheckWinner(newBoard)
@@ -56,7 +53,6 @@ function App() {
       setWinner(false)
     }
   }
-  console.log('updateBoard')
 
   return (
     <main className='board'>
